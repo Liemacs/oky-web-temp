@@ -117,7 +117,7 @@ var $=function(s,r){return (r||document).querySelector(s)};
     ' float g10=max(ln(lat*.1,.7),ln(lon*.1,.7));float g30=max(ln(lat/30.,1.),ln(lon/30.,1.));col=mix(col,AZ,(g10*.035+g30*.06)*fade);'+
     ' float nr=exp(-ch*ch*240.);'+
     ' float kl=(1.-smoothstep(0.,1.2*fwidth(lat),abs(lat-'+KIV[0].toFixed(3)+')))+(1.-smoothstep(0.,1.2*fwidth(lon),abs(lon-'+KIV[1].toFixed(3)+')));'+
-    ' col=mix(col,AUR,clamp(kl*nr*step(.5,fract(ch*300.))*.75+exp(-ch*ch*9000.)*.45+rg*.7,0.,1.));'+
+    ' col=mix(col,AUR,clamp(kl*nr*step(.5,fract(ch*300.))*.75,0.,1.));'+
     ' float fr=pow(1.-ndv,2.6);col=mix(col,TINT,fr*.65);col=mix(col,AZ,pow(1.-ndv,9.)*.35);'+
     ' gl_FragColor=vec4(col,1.);}';
   var ATMO_W='varying vec3 vNv;void main(){float k=clamp(-vNv.z,0.,1.);float t=smoothstep(0.,.37,k);float i=t*t*t;'+
@@ -357,7 +357,7 @@ var $=function(s,r){return (r||document).querySelector(s)};
     kW.copy(kivN).applyQuaternion(earth.quaternion);
     S=(W<760?30:Math.min(54,Math.max(40,W*.03)))/(H/(2*Math.tan(V.fov*D2R/2)*cam.position.distanceTo(kW)));
   }
-  function triggerRing(t){var q=RINGS[0];RINGS.forEach(function(x){if(x.t0<q.t0)q=x});q.t0=t}
+  function triggerRing(t){if(WHITE) return; var q=RINGS[0];RINGS.forEach(function(x){if(x.t0<q.t0)q=x});q.t0=t}
 
   function update(t){
     orient(RM?0:Math.sin(t*.041)*.8, RM?0:Math.sin(t*.029)*2.2);
@@ -392,17 +392,17 @@ var $=function(s,r){return (r||document).querySelector(s)};
       P.visible=SH.visible=grow>.02; r.last=fly?u:0;
       for(var k=0;k<trailN;k++){var uk=u-(k+1)*.0045, fa=1-k/trailN, ok=fly&&uk>0&&grow>.02;
         if(ok) c.getPointAt(uk,tmp); setPt(tG,i*trailN+k,ok?tmp:r.A,(MOB?4.5:6)*fa+1.2,k<3?COL.warm:COL.ice,ok?.85*Math.pow(fa,1.4)*grow:0)}
-      var fl=Math.exp(-(t-r.flash)*2.2); HC.copy(COL.cyan).lerp(COL.gold,Math.min(1,fl*1.4));
+      var fl=WHITE?0:Math.exp(-(t-r.flash)*2.2); HC.copy(COL.cyan).lerp(COL.gold,Math.min(1,fl*1.4));
       setPt(hubG,i*2,r.A,(MOB?6:7)+fl*5,HC,.95);
-      setPt(hubG,i*2+1,r.A,(MOB?18:24)+Math.sin(t*1.6+i)*5+fl*22,HC,.28+fl*.45);
+      setPt(hubG,i*2+1,r.A,(MOB?18:24)+Math.sin(t*1.6+i)*5+fl*22,HC,WHITE?0:.28+fl*.45);
     }
     dirty(tG); dirty(hubG); dirty(navG);
     var pulse=0;
     for(var q=0;q<RINGS.length;q++){var R=RINGS[q], age=t-R.t0, on=age>=0&&age<2.6, kq=on?age/2.6:1;
       R.m.visible=on; if(on){var s=.012+age*.085;R.m.scale.set(s,s,s);R.m.material.uniforms.uA.value=Math.pow(1-kq,1.6);pulse=Math.max(pulse,Math.exp(-age*1.6))}
       U.uRings.value.setComponent(q,on?age*.078:9); U.uRingsI.value.setComponent(q,on?(1-kq)*(1-kq):0)}
-    setPt(kG,0,kPos,(MOB?52:70)+pulse*70,COL.gold,(.17+pulse*.33)*(WHITE?.5:1));
-    setPt(kG,1,kPos,(MOB?15:19)+pulse*10,COL.warm,.62);
+    setPt(kG,0,kPos,(MOB?52:70)+pulse*70,COL.gold,WHITE?0:.17+pulse*.33);
+    setPt(kG,1,kPos,(MOB?15:19)+pulse*10,COL.warm,WHITE?0:.62);
     setPt(kG,2,kPos,MOB?6:7,COL.white,.95); dirty(kG);
   }
 
