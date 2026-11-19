@@ -11,7 +11,7 @@ var $=function(s,r){return (r||document).querySelector(s)};
   if(!cv||!hero) return;
   if(!window.THREE){hero.classList.add('no-webgl');return}
   var MOB=matchMedia('(max-width: 760px)').matches, SYS_DPR=window.devicePixelRatio||1;
-  var WHITE=document.documentElement.getAttribute('data-globe')==='white', BLEND=WHITE?THREE.NormalBlending:THREE.AdditiveBlending, RSIDE=WHITE?THREE.DoubleSide:THREE.FrontSide;   /* ribbons wind clockwise; the white globe shows them all */   /* variant 2: white globe, dark topo lines */
+  var GK=document.documentElement.getAttribute('data-globe'), DOTS=GK==='dots', WHITE=GK==='white'||DOTS, BLEND=WHITE?THREE.NormalBlending:THREE.AdditiveBlending, RSIDE=WHITE?THREE.DoubleSide:THREE.FrontSide;   /* ribbons wind clockwise; the white globe shows them all */   /* variant 2: white globe, dark topo lines */
   var DPR0=Math.min(SYS_DPR,MOB?1.3:1.5), DPR=DPR0, DPR_MIN=MOB?.75:.9;
   var rnd;
   try{rnd=new THREE.WebGLRenderer({canvas:cv,antialias:SYS_DPR<1.5,alpha:true,stencil:false,powerPreference:'high-performance'})}
@@ -92,7 +92,8 @@ var $=function(s,r){return (r||document).querySelector(s)};
 
   /* ---------- planet surface: one pass (relief, contours, coasts, depth lines, grid, clouds, landing light) ---------- */
   var U={uGeo:{value:null},uMask:{value:null},uDet:{value:null},uHasMask:{value:0},uLight:{value:L},uCam:{value:new THREE.Vector3()},
-    uKiv:{value:kivN},uTime:{value:0},uRings:{value:new THREE.Vector4(9,9,9,9)},uRingsI:{value:new THREE.Vector4()},uDisp:{value:.008}};
+    uKiv:{value:kivN},uTime:{value:0},uRings:{value:new THREE.Vector4(9,9,9,9)},uRingsI:{value:new THREE.Vector4()},uDisp:{value:.008},
+    uRo:{value:null},uRoBox:{value:new THREE.Vector4(20,43.4,30,48.5)}};   /* Romania mask for the dotted globe (lon/lat box) */
   /* variant 2 surface: white paper, azure/navy contours, navy coasts, gold landing (energocom palette) */
   var FRAG_W='uniform sampler2D uGeo;uniform sampler2D uMask;uniform sampler2D uDet;uniform float uHasMask;uniform float uTime;'+
     'uniform vec3 uLight;uniform vec3 uCam;uniform vec3 uKiv;uniform vec4 uRings;uniform vec4 uRingsI;'+
@@ -130,13 +131,34 @@ var $=function(s,r){return (r||document).querySelector(s)};
     'float d=uProg-vT;float tr=(uProg>0.&&d>0.)?exp(-d*7.5):0.;'+
     'float a=(dd*.8+tr*.9)*core*smoothstep(0.,.02,vT);if(a<.01)discard;'+
     'gl_FragColor=vec4(mix(c,OR*.9,tr*.7),min(a,1.));}';
+  /* variant 3 surface: a dotted globe. Land is a halftone of azure dots (a little bigger and deeper in the mountains),
+     Romania is gold; no contour lines, coasts or grid. Rows keep equal ground spacing (fewer dots toward the poles). */
+  var DOT_SP='.38';
+  var FRAG_D='uniform sampler2D uGeo;uniform sampler2D uMask;uniform float uHasMask;uniform sampler2D uRo;uniform vec4 uRoBox;'+
+    'uniform vec3 uLight;uniform vec3 uCam;varying vec2 vUv;varying vec3 vN;varying vec3 vPos;varying vec3 vObj;'+
+    'void main(){'+
+    ' vec3 N=normalize(vN);vec3 L=normalize(uLight);vec3 V=normalize(uCam-vPos);'+
+    ' float glb=clamp(dot(N,L)*.5+.5,0.,1.);float ndv=clamp(dot(N,V),0.,1.);float fade=smoothstep(.04,.3,ndv);'+
+    ' vec3 AZ=vec3(.255,.404,.686),DEEP=vec3(.082,.141,.22),TINT=vec3(.851,.878,.933),AUR=vec3(.843,.686,.341);'+
+    ' vec3 col=vec3(.98,.982,.986)*(.94+.06*glb);float fr=pow(1.-ndv,2.6);col=mix(col,TINT,fr*.65);col=mix(col,AZ,pow(1.-ndv,9.)*.35);'+
+    ' float lat=(vUv.y-.5)*180.,lon=vUv.x*360.-180.,SP='+DOT_SP+';'+
+    ' float latR=floor(lat/SP+.5)*SP;float sl=360./max(1.,floor(360.*max(cos(radians(latR)),.01)/SP));'+
+    ' float lonC=(floor((lon+180.)/sl)+.5)*sl-180.;vec2 cuv=vec2((lonC+180.)/360.,(latR+90.)/180.);'+
+    ' float land=uHasMask>.5?texture2D(uMask,cuv,-16.).r:texture2D(uGeo,cuv,-16.).b;float e=texture2D(uGeo,cuv,-16.).r;'+
+    ' vec2 rb=(vec2(lonC,latR)-uRoBox.xy)/(uRoBox.zw-uRoBox.xy);'+
+    ' float ro=(rb.x>0.&&rb.x<1.&&rb.y>0.&&rb.y<1.)?step(.5,texture2D(uRo,rb,-16.).r):0.;'+
+    ' float d=length(vec2((lon-lonC)*cos(radians(lat)),lat-latR));'+
+    ' float rad=SP*mix(mix(.22,.32,smoothstep(.05,.6,e)),.34,ro);float aa=fwidth(lat)*.8+1e-4;'+
+    ' float dm=(1.-smoothstep(rad-aa,rad+aa,d))*step(.5,max(land,ro));'+
+    ' vec3 dc=mix(mix(AZ,DEEP,smoothstep(.3,.8,e)*.55),AUR,ro);col=mix(col,dc,dm*mix(.2+.7*fade,.95,ro));'+
+    ' gl_FragColor=vec4(col,1.);}';
   var surfMat=new THREE.ShaderMaterial({uniforms:U,extensions:{derivatives:true},defines:MOB?{}:{DISP:1},
     vertexShader:
       'uniform sampler2D uGeo;uniform float uDisp;varying vec2 vUv;varying vec3 vN;varying vec3 vPos;varying vec3 vObj;'+
       'void main(){vUv=uv;vec3 p=position;\n'+
       '#ifdef DISP\n vec3 g=texture2D(uGeo,uv).rgb;p*=1.+uDisp*g.r*g.b;\n#endif\n'+
       'vObj=normalize(position);vec4 w=modelMatrix*vec4(p,1.);vPos=w.xyz;vN=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*viewMatrix*w;}',
-    fragmentShader:WHITE?FRAG_W:
+    fragmentShader:DOTS?FRAG_D:WHITE?FRAG_W:
       'uniform sampler2D uGeo;uniform sampler2D uMask;uniform sampler2D uDet;uniform float uHasMask;uniform float uTime;'+
       'uniform vec3 uLight;uniform vec3 uCam;uniform vec3 uKiv;uniform vec4 uRings;uniform vec4 uRingsI;'+
       'varying vec2 vUv;varying vec3 vN;varying vec3 vPos;varying vec3 vObj;'+LINE+
@@ -256,6 +278,14 @@ var $=function(s,r){return (r||document).querySelector(s)};
       'void main(){float px=abs(vS)*uWidth*.5;float a=(1.-smoothstep(.5,1.3,px))*.95+exp(-px*px/6.)*.35;'+
       (WHITE?'gl_FragColor=vec4(vec3(.843,.686,.341),a*.95);}':'gl_FragColor=vec4(vec3(.95,.76,.3)*(1.+.12*sin(vT*40.-uTime*1.6)),a);}')}));
   mdLine.renderOrder=4; earth.add(mdLine);
+  if(DOTS){   /* dotted globe: Romania becomes gold dots in the surface shader, from a small mask of its outline */
+    mdFill.visible=false; mdLine.visible=false;
+    var roB=U.uRoBox.value, roW=512, roH=262, roC=document.createElement('canvas'), roG=roC.getContext('2d'); roC.width=roW; roC.height=roH;
+    roG.fillStyle='#000'; roG.fillRect(0,0,roW,roH); roG.fillStyle='#fff'; roG.beginPath();
+    MD.forEach(function(p,i){var x=(p[0]-roB.x)/(roB.z-roB.x)*roW, y=(1-(p[1]-roB.y)/(roB.w-roB.y))*roH; if(i) roG.lineTo(x,y); else roG.moveTo(x,y)});
+    roG.closePath(); roG.fill();
+    var roTex=new THREE.CanvasTexture(roC); roTex.generateMipmaps=false; roTex.minFilter=THREE.LinearFilter; U.uRo.value=roTex;
+  }
   var beamPts=[kivN.clone().multiplyScalar(1.004),kivN.clone().multiplyScalar(1.04),kivN.clone().multiplyScalar(1.078)];
   var beam=new THREE.Mesh(ribbonGeo(beamPts,false),new THREE.ShaderMaterial({uniforms:{uRes:{value:res},uWidth:{value:5}},transparent:true,depthWrite:false,side:RSIDE,blending:BLEND,
     vertexShader:RIB_V,fragmentShader:'uniform float uWidth;varying float vT;varying float vS;void main(){float px=abs(vS)*uWidth*.5;'+
