@@ -19,48 +19,48 @@ var IC={
 
 /* ---------------- content (all of it from okiway.md) ---------------- */
 var SERVICES=[
-  ['send','Transport aerian express','Livrare în 24–48 h prin zboruri directe și conexiuni globale. Pentru mărfuri de valoare sau cu termen strâns.'],
-  ['box','Cargo standard','Tarif economic pentru volume mari. Consolidăm marfa și o trimitem pe rute regulate, cu zboruri zilnice.'],
-  ['doc','Vămuire completă','Ne ocupăm de documentație, declarații și clasificare, ca marfa să treacă frontiera fără întârzieri.'],
-  ['temp','Cargo perisabil și special','Medicamente, produse medicale și alimente, transportate în condiții controlate, cu temperatura monitorizată continuu.'],
-  ['max','Cargo supradimensionat','Utilaje industriale și componente mari, încărcate direct prin nasul basculant al aeronavei.'],
-  ['route','Curse charter marfă','Rută și program stabilite doar pentru tine, cu monitorizare constantă pe tot parcursul zborului.']
+  ['send','Express air freight','Delivery in 24–48 h on direct flights and global connections. For high-value or time-critical cargo.'],
+  ['box','Standard cargo','Economy rates for large volumes. We consolidate your cargo and ship it on scheduled routes with daily flights.'],
+  ['doc','Full customs clearance','We handle the paperwork, declarations and classification, so your cargo crosses the border without delays.'],
+  ['temp','Perishable & special cargo','Pharmaceuticals, medical supplies and food, carried under controlled conditions with continuous temperature monitoring.'],
+  ['max','Oversized cargo','Industrial machinery and large components, loaded straight through the aircraft’s swing-up nose.'],
+  ['route','Cargo charters','A route and schedule set just for you, with constant monitoring throughout the flight.']
 ];
 var FLEET=[
-  ['Boeing 747-8F','4K-BCG','assets/img/a747.jpg','Încărcare prin nas pentru marfă supradimensionată',[['140 t','Capacitate'],['8.130 km','Rază'],['858 m³','Volum'],['988 km/h','Viteză']]],
-  ['Boeing 777F','4K-SW888','assets/img/a777.jpg','Cea mai mare rază de zbor din flotă',[['103 t','Capacitate'],['9.200 km','Rază'],['653 m³','Volum'],['905 km/h','Viteză']]]
+  ['Boeing 747-8F','4K-BCG','assets/img/a747.jpg','Nose loading for oversized cargo',[['140 t','Payload'],['8,130 km','Range'],['858 m³','Volume'],['988 km/h','Speed']]],
+  ['Boeing 777F','4K-SW888','assets/img/a777.jpg','The longest range in the fleet',[['103 t','Payload'],['9,200 km','Range'],['653 m³','Volume'],['905 km/h','Speed']]]
 ];
 var ROUTES=[
-  ['Asia de Est','China, Japonia și Coreea de Sud','HKG / PVG / CAN',7,'assets/img/shanghai.jpg','Shanghai'],
-  ['Europa de Vest și Nord','Germania, Marea Britanie, Belgia, Italia, Spania','FRA / HAM / BER',16,'assets/img/paris.jpg','Europa de Vest'],
-  ['Asia de Vest','Turcia, EAU, Israel și Irak','IST / KWI / BGW',8,'assets/img/dubai.jpg','Dubai'],
-  ['Europa de Est','Moldova, România, Bulgaria și Țările Baltice','TBS / GYD / RMO',7,'assets/img/tallinn.jpg','Tallinn'],
-  ['Asia Centrală','Kazahstan, Kârgâzstan, Turkmenistan, Uzbekistan','ALA / FRU / ASB',6,'assets/img/registan.jpg','Samarkand'],
-  ['Asia de Sud și Sud-Est','India, Malaysia și Singapore','SIN / BOM / KUL',5,'assets/img/india.jpg','India'],
-  ['America de Nord','SUA, Canada și Mexic','EWR / DEN / AUS',11,'assets/img/newyork.jpg','New York'],
-  ['America de Sud','Argentina și Chile','SCL / EZE',2,'assets/img/santiago.jpg','Santiago']
+  ['East Asia','China, Japan and South Korea','HKG / PVG / CAN',7,'assets/img/shanghai.jpg','Shanghai'],
+  ['Western & Northern Europe','Germany, UK, Belgium, Italy, Spain','FRA / HAM / BER',16,'assets/img/paris.jpg','Western Europe'],
+  ['West Asia','Türkiye, UAE, Israel and Iraq','IST / KWI / BGW',8,'assets/img/dubai.jpg','Dubai'],
+  ['Eastern Europe','Moldova, Romania, Bulgaria and the Baltics','TBS / GYD / RMO',7,'assets/img/tallinn.jpg','Tallinn'],
+  ['Central Asia','Kazakhstan, Kyrgyzstan, Turkmenistan, Uzbekistan','ALA / FRU / ASB',6,'assets/img/registan.jpg','Samarkand'],
+  ['South & Southeast Asia','India, Malaysia and Singapore','SIN / BOM / KUL',5,'assets/img/india.jpg','India'],
+  ['North America','USA, Canada and Mexico','EWR / DEN / AUS',11,'assets/img/newyork.jpg','New York'],
+  ['South America','Argentina and Chile','SCL / EZE',2,'assets/img/santiago.jpg','Santiago']
 ];
 /* departure airports per region (same order as ROUTES), from the airports popup on okiway.md */
-var AIRPORTS=[[["HKG","Hong Kong International Airport","Hong Kong"],["CAN","Guangzhou Baiyun International Airport","Guangzhou, China"],["PVG","Shanghai Pudong International Airport","Shanghai, China"],["PEK","Beijing Capital International Airport","Beijing, China"],["CGO","Zhengzhou Xinzheng Airport","Zhengzhou, China"],["NRT","Narita International Airport","Tokyo, Japonia"],["ICN","Incheon International Airport","Seul, Coreea de Sud"]],[["HAM","Hamburg Airport","Hamburg, Germania"],["HHN","Frankfurt-Hahn Airport","Frankfurt, Germania"],["BER","Berlin Brandenburg Airport","Berlin, Germania"],["MUC","Munich International Airport","München, Germania"],["LUX","Findel International Airport","Luxemburg"],["LGG","Liège Airport","Liège, Belgia"],["VIE","Vienna International Airport","Viena, Austria"],["AMS","Amsterdam Schiphol Airport","Amsterdam, Țările de Jos"],["MST","Maastricht Aachen Airport","Maastricht, Țările de Jos"],["NCL","Newcastle International Airport","Newcastle, Anglia"],["LHR/STN/BHX","London Heathrow / Stansted / Birmingham","Londra, Marea Britanie"],["BFS","Belfast International Airport","Belfast, Irlanda de Nord"],["BSL","Euro Airport Basel-Mulhouse-Freiburg","Basel, Franța"],["MXP","Malpensa International Airport","Milano, Italia"],["MAD","Adolfo Suárez Madrid–Barajas Airport","Madrid, Spania"],["OSL","Oslo Airport","Oslo, Norvegia"]],[["IST","Istanbul Airport","Istanbul, Turcia"],["KWI","Kuwait International Airport","Kuweit"],["BGW","Baghdad International Airport","Bagdad, Irak"],["EBL","Erbil International Airport","Erbil, Irak"],["BSR","Basra International Airport","Basra, Irak"],["TLV","Ben Gurion International Airport","Tel Aviv, Israel"],["SHJ","Sharjah International Airport","Sharjah, EAU"],["DWC","Al Maktoum International Airport","Dubai, EAU"]],[["TBS","Tbilisi International Airport","Tbilisi, Georgia"],["GYD","Heydar Aliyev International Airport","Baku, Azerbaidjan"],["RMO","Chișinău International Airport","Chișinău, Moldova"],["OTP","Henri Coandă International Airport","București, România"],["SOF","Sofia International Airport","Sofia, Bulgaria"],["PRG","Václav Havel Airport Prague","Praga, Cehia"],["VNO","Vilnius International Airport","Vilnius, Lituania"]],[["FRU","Manas International Airport","Bișkek, Kârgâzstan"],["ASB","Ashgabat Airport","Așgabat, Turkmenistan"],["ALA","Almaty Airport","Almaty, Kazahstan"],["SCO","Aktau Airport","Aktau, Kazahstan"],["TAS","Tashkent International Airport","Tașkent, Uzbekistan"],["GUW","Atyrau Airport","Atyrau, Kazahstan"]],[["KUL","Kuala Lumpur International Airport","Kuala Lumpur, Malaysia"],["SIN","Singapore Changi International Airport","Singapore"],["BOM","Chhatrapati Shivaji Maharaj Intl Airport","Mumbai, India"],["AMD","Sardar Vallabhbhai Patel Intl Airport","Ahmedabad, India"],["CCU","Netaji Subhash Chandra Bose Intl Airport","Kolkata, India"]],[["AUS","Austin-Bergstrom International Airport","Austin, SUA"],["DEN","Denver International Airport","Denver, SUA"],["EWR","Newark Liberty International Airport","Newark, SUA"],["IAD","Dulles International Airport","Washington, SUA"],["ATL","Hartsfield-Jackson Atlanta Intl Airport","Atlanta, SUA"],["MIA","Miami International Airport","Miami, SUA"],["ORD","O'Hare International Airport","Chicago, SUA"],["IAH","George Bush Intercontinental Airport","Houston, SUA"],["JFK","John F. Kennedy International Airport","New York, SUA"],["MEX","Benito Juárez International Airport","Ciudad de México, Mexic"],["YYZ","Toronto Pearson International Airport","Toronto, Canada"]],[["SCL","Arturo Merino Benítez International Airport","Santiago, Chile"],["EZE","Ministro Pistarini International Airport","Buenos Aires, Argentina"]]];
+var AIRPORTS=[[["HKG","Hong Kong International Airport","Hong Kong"],["CAN","Guangzhou Baiyun International Airport","Guangzhou, China"],["PVG","Shanghai Pudong International Airport","Shanghai, China"],["PEK","Beijing Capital International Airport","Beijing, China"],["CGO","Zhengzhou Xinzheng Airport","Zhengzhou, China"],["NRT","Narita International Airport","Tokyo, Japan"],["ICN","Incheon International Airport","Seoul, South Korea"]],[["HAM","Hamburg Airport","Hamburg, Germany"],["HHN","Frankfurt-Hahn Airport","Frankfurt, Germany"],["BER","Berlin Brandenburg Airport","Berlin, Germany"],["MUC","Munich International Airport","Munich, Germany"],["LUX","Findel International Airport","Luxembourg"],["LGG","Liège Airport","Liège, Belgium"],["VIE","Vienna International Airport","Vienna, Austria"],["AMS","Amsterdam Schiphol Airport","Amsterdam, Netherlands"],["MST","Maastricht Aachen Airport","Maastricht, Netherlands"],["NCL","Newcastle International Airport","Newcastle, England"],["LHR/STN/BHX","London Heathrow / Stansted / Birmingham","London, United Kingdom"],["BFS","Belfast International Airport","Belfast, Northern Ireland"],["BSL","Euro Airport Basel-Mulhouse-Freiburg","Basel, France"],["MXP","Malpensa International Airport","Milan, Italy"],["MAD","Adolfo Suárez Madrid–Barajas Airport","Madrid, Spain"],["OSL","Oslo Airport","Oslo, Norway"]],[["IST","Istanbul Airport","Istanbul, Türkiye"],["KWI","Kuwait International Airport","Kuwait"],["BGW","Baghdad International Airport","Baghdad, Iraq"],["EBL","Erbil International Airport","Erbil, Iraq"],["BSR","Basra International Airport","Basra, Iraq"],["TLV","Ben Gurion International Airport","Tel Aviv, Israel"],["SHJ","Sharjah International Airport","Sharjah, UAE"],["DWC","Al Maktoum International Airport","Dubai, UAE"]],[["TBS","Tbilisi International Airport","Tbilisi, Georgia"],["GYD","Heydar Aliyev International Airport","Baku, Azerbaijan"],["RMO","Chișinău International Airport","Chișinău, Moldova"],["OTP","Henri Coandă International Airport","Bucharest, Romania"],["SOF","Sofia International Airport","Sofia, Bulgaria"],["PRG","Václav Havel Airport Prague","Prague, Czechia"],["VNO","Vilnius International Airport","Vilnius, Lithuania"]],[["FRU","Manas International Airport","Bishkek, Kyrgyzstan"],["ASB","Ashgabat Airport","Ashgabat, Turkmenistan"],["ALA","Almaty Airport","Almaty, Kazakhstan"],["SCO","Aktau Airport","Aktau, Kazakhstan"],["TAS","Tashkent International Airport","Tashkent, Uzbekistan"],["GUW","Atyrau Airport","Atyrau, Kazakhstan"]],[["KUL","Kuala Lumpur International Airport","Kuala Lumpur, Malaysia"],["SIN","Singapore Changi International Airport","Singapore"],["BOM","Chhatrapati Shivaji Maharaj Intl Airport","Mumbai, India"],["AMD","Sardar Vallabhbhai Patel Intl Airport","Ahmedabad, India"],["CCU","Netaji Subhash Chandra Bose Intl Airport","Kolkata, India"]],[["AUS","Austin-Bergstrom International Airport","Austin, USA"],["DEN","Denver International Airport","Denver, USA"],["EWR","Newark Liberty International Airport","Newark, USA"],["IAD","Dulles International Airport","Washington, USA"],["ATL","Hartsfield-Jackson Atlanta Intl Airport","Atlanta, USA"],["MIA","Miami International Airport","Miami, USA"],["ORD","O'Hare International Airport","Chicago, USA"],["IAH","George Bush Intercontinental Airport","Houston, USA"],["JFK","John F. Kennedy International Airport","New York, USA"],["MEX","Benito Juárez International Airport","Mexico City, Mexico"],["YYZ","Toronto Pearson International Airport","Toronto, Canada"]],[["SCL","Arturo Merino Benítez International Airport","Santiago, Chile"],["EZE","Ministro Pistarini International Airport","Buenos Aires, Argentina"]]];
 var STEPS=[
-  ['Solicită oferta','Completează formularul sau sună-ne. Primești oferta finală, cu prețul complet și fără costuri ascunse.'],
-  ['Planificăm ruta','Alegem cea mai rapidă și economică rută, apoi pregătim documentația de import și formalitățile vamale.'],
-  ['Preluăm și încărcăm','Ridicăm marfa, o ambalăm conform standardelor IATA și o pregătim pentru încărcare în aeronavă.'],
-  ['Livrăm și confirmăm','Marfa ajunge la destinație. Primești confirmarea, documentele de import și raportul transportului.']
+  ['Request a quote','Fill in the form or call us. You get a final quote with the full price and no hidden costs.'],
+  ['We plan the route','We choose the fastest, most cost-effective route, then prepare the import documents and customs formalities.'],
+  ['We collect and load','We pick up your cargo, pack it to IATA standards and get it ready for loading onto the aircraft.'],
+  ['We deliver and confirm','Your cargo reaches its destination. You receive the confirmation, the import documents and a shipment report.']
 ];
 var WHY=[
-  ['bolt','Cel mai rapid slot','350+ zboruri lunare. Găsim cel mai rapid slot pentru marfa ta, indiferent de destinație sau volum.'],
-  ['shield','Securitate certificată IATA','Proceduri complete de securitate, asigurare cargo și tracking GPS pe fiecare expediție.'],
-  ['globe','Rețea globală','60+ destinații în Europa, Asia, SUA și Orientul Mijlociu, cu legătură directă spre Moldova.'],
-  ['user','Manager personal 24/7','Un om dedicat, accesibil oricând. Vorbești direct cu responsabilul expedierii, nu cu un sistem automat.']
+  ['bolt','The fastest slot','350+ flights a month. We find the fastest slot for your cargo, whatever the destination or volume.'],
+  ['shield','IATA-certified security','Full security procedures, cargo insurance and GPS tracking on every shipment.'],
+  ['globe','Global network','60+ destinations across Europe, Asia, the US and the Middle East, with direct links to Moldova.'],
+  ['user','Personal manager 24/7','One dedicated person you can reach any time. You talk directly to whoever is responsible for your shipment, not to an automated system.']
 ];
 var FAQ=[
-  ['Cât durează transportul până în Chișinău?','Prin serviciul express, 24–48 h, pe zboruri directe și conexiuni globale. Cargo standard pleacă pe rute regulate, cu zboruri zilnice. Termenul exact pentru ruta ta îl primești odată cu oferta.'],
-  ['Vă ocupați și de vămuire?','Da. Gestionăm tot procesul vamal: documentația, declarațiile și clasificarea mărfii. La final primești documentele de import și raportul transportului.'],
-  ['Cum se calculează prețul?','Prețul depinde de rută, greutate, volum și tipul mărfii. Trimite-ne aceste date și primești gratuit oferta finală, cu prețul complet și fără costuri ascunse.'],
-  ['Transportați medicamente sau marfă perisabilă?','Da. Produsele farmaceutice, medicale și alimentele zboară în condiții controlate, cu monitorizare continuă a temperaturii.'],
-  ['Ce faceți cu marfa supradimensionată?','Utilajele industriale și componentele mari se încarcă direct prin nasul basculant al aeronavei. Spune-ne dimensiunile și greutatea, iar noi verificăm ruta potrivită.'],
-  ['Cine îmi răspunde dacă apare o problemă?','Managerul tău personal. Este accesibil oricând pentru urgențe, iar tu vorbești direct cu omul responsabil de expediere.']
+  ['How long does shipping to Chișinău take?','With our express service, 24–48 h on direct flights and global connections. Standard cargo travels on scheduled routes with daily flights. You get the exact transit time for your route together with the quote.'],
+  ['Do you handle customs clearance too?','Yes. We manage the entire customs process: the paperwork, declarations and cargo classification. At the end you receive the import documents and a shipment report.'],
+  ['How is the price calculated?','The price depends on the route, weight, volume and type of cargo. Send us these details and you get a free final quote with the full price and no hidden costs.'],
+  ['Do you carry pharmaceuticals or perishables?','Yes. Pharmaceuticals, medical supplies and food fly under controlled conditions with continuous temperature monitoring.'],
+  ['What about oversized cargo?','Industrial machinery and large components are loaded straight through the aircraft’s swing-up nose. Tell us the dimensions and weight, and we will find the right route.'],
+  ['Who do I talk to if something goes wrong?','Your personal manager. They can be reached any time in an emergency, and you speak directly with the person responsible for your shipment.']
 ];
 
 /* ---------------- render (stagger: 50ms inside a group) ---------------- */
@@ -69,17 +69,17 @@ $('#svc').innerHTML=SERVICES.map(function(s,i){
     '</article>';
 }).join('');
 $('#fleet').innerHTML=FLEET.map(function(f,i){
-  return '<article class="card ac" data-a style="--d:'+i*50+'ms"><div class="ph"><img src="'+f[2]+'" alt="'+f[0]+' Silk Way West, înmatriculare '+f[1]+'" loading="lazy"><span class="tagr">'+f[1]+'</span></div>'+
+  return '<article class="card ac" data-a style="--d:'+i*50+'ms"><div class="ph"><img src="'+f[2]+'" alt="'+f[0]+' Silk Way West, registration '+f[1]+'" loading="lazy"><span class="tagr">'+f[1]+'</span></div>'+
     '<div class="bd"><div class="row"><h3 style="font-size:1.5rem">'+f[0]+'</h3><span>'+f[3]+'</span></div>'+
     '<div class="specs">'+f[4].map(function(s){return '<div><b>'+s[0]+'</b><span class="cap">'+s[1]+'</span></div>'}).join('')+'</div></div></article>';
 }).join('');
 /* routes grid: Chișinău in the centre, each region placed roughly in its direction from Moldova (-1 = Chișinău) */
 var GRID=[6,3,4, 1,-1,0, 7,2,5];
 $('#rgrid').innerHTML=GRID.map(function(k){
-  var r=k<0?['Chișinău','Destinația tuturor rutelor, cu vămuire inclusă','RMO','Aeroportul Internațional','assets/img/chisinau.jpg']:[ROUTES[k][0],ROUTES[k][1],ROUTES[k][2],ROUTES[k][3]+' aeroporturi',ROUTES[k][4]];
+  var r=k<0?['Chișinău','Where every route lands, customs clearance included','RMO','International Airport','assets/img/chisinau.jpg']:[ROUTES[k][0],ROUTES[k][1],ROUTES[k][2],ROUTES[k][3]+' airports',ROUTES[k][4]];
   return '<button type="button" class="rt'+(k<0?' kiv':'')+'" data-k="'+k+'"'+(k<0?'':' aria-haspopup="dialog"')+'><img src="'+r[4]+'" alt="" loading="lazy" decoding="async">'+
     '<span class="rt-cap"><b>'+r[0]+'</b><span class="rt-cn">'+r[1]+'</span><span class="rt-cd">'+r[2]+'<em>'+r[3]+'</em></span>'+
-    '<span class="rt-go">'+(k<0?'Cere ofertă':'Vezi aeroporturile')+'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.2929 7.70711C14.9024 7.31658 14.9024 6.68342 15.2929 6.29289C15.6834 5.90237 16.3166 5.90237 16.7071 6.29289L21.7071 11.2929C22.0976 11.6834 22.0976 12.3166 21.7071 12.7071L16.7071 17.7071C16.3166 18.0976 15.6834 18.0976 15.2929 17.7071C14.9024 17.3166 14.9024 16.6834 15.2929 16.2929L18.5858 13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H18.5858L15.2929 7.70711Z" fill="currentColor"/></svg></span></span></button>';
+    '<span class="rt-go">'+(k<0?'Get a quote':'View airports')+'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.2929 7.70711C14.9024 7.31658 14.9024 6.68342 15.2929 6.29289C15.6834 5.90237 16.3166 5.90237 16.7071 6.29289L21.7071 11.2929C22.0976 11.6834 22.0976 12.3166 21.7071 12.7071L16.7071 17.7071C16.3166 18.0976 15.6834 18.0976 15.2929 17.7071C14.9024 17.3166 14.9024 16.6834 15.2929 16.2929L18.5858 13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H18.5858L15.2929 7.70711Z" fill="currentColor"/></svg></span></span></button>';
 }).join('');
 $('#flow').innerHTML=STEPS.map(function(s,i){
   return '<article class="st" data-a style="--d:'+i*50+'ms"><div class="top"><span class="k">'+(i+1)+'</span></div>'+
@@ -136,9 +136,9 @@ document.querySelectorAll('[data-a]').forEach(function(el){ if(!el.closest('.her
 var hdr=$('#hdr'),burger=$('#burger'),hnav=$('#hnav');
 function onScroll(){hdr.classList.toggle('on',scrollY>20)}
 addEventListener('scroll',onScroll,{passive:true}); onScroll();
-function closeMenu(){hdr.classList.remove('open');burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Deschide meniul')}
+function closeMenu(){hdr.classList.remove('open');burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Open menu')}
 burger.addEventListener('click',function(){
-  var o=hdr.classList.toggle('open');burger.setAttribute('aria-expanded',o?'true':'false');burger.setAttribute('aria-label',o?'Închide meniul':'Deschide meniul');
+  var o=hdr.classList.toggle('open');burger.setAttribute('aria-expanded',o?'true':'false');burger.setAttribute('aria-label',o?'Close menu':'Open menu');
 });
 hnav.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
 addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
@@ -154,7 +154,7 @@ addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
   btn.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();open(true)}});
   items.forEach(function(it){it.addEventListener('click',function(){
     items.forEach(function(x){x.setAttribute('aria-checked',x===it?'true':'false')});
-    cur.textContent=it.dataset.code; btn.setAttribute('aria-label','Limba site-ului: '+it.dataset.name); close(true);
+    cur.textContent=it.dataset.code; btn.setAttribute('aria-label','Site language: '+it.dataset.name); close(true);
   })});
   menu.addEventListener('keydown',function(e){var i=items.indexOf(document.activeElement);
     if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus()}
@@ -171,9 +171,9 @@ addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
 [['gv','gvBtn','gvMenu'],['gvM','gvBtnM','gvMenuM']].forEach(function(ids){(function(w,b,m){
   var wrap=document.getElementById(w),btn=document.getElementById(b),menu=document.getElementById(m);
   if(!wrap||!btn||!menu) return;
-  var cur=document.documentElement.getAttribute('data-globe')||'blue', items=[].slice.call(menu.querySelectorAll('[role="menuitemradio"]'));
+  var cur=document.documentElement.getAttribute('data-globe')||'white', items=[].slice.call(menu.querySelectorAll('[role="menuitemradio"]'));
   items.forEach(function(it){var on=it.getAttribute('data-globe')===cur; it.setAttribute('aria-checked',on?'true':'false');
-    if(on) btn.setAttribute('aria-label','Varianta globului: '+it.querySelector('b').textContent+', '+it.querySelector('.gv-t span').textContent)});
+    if(on) btn.setAttribute('aria-label','Globe variant: '+it.querySelector('b').textContent+', '+it.querySelector('.gv-t span').textContent)});
   function isOpen(){return wrap.classList.contains('open')}
   function open(focusItem){wrap.classList.add('open');btn.setAttribute('aria-expanded','true');
     if(focusItem){var c=menu.querySelector('[aria-checked="true"]')||items[0];requestAnimationFrame(function(){c.focus()})}}
@@ -196,7 +196,7 @@ addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
 (function(){
   var dlg=$('#apd'); if(!dlg||typeof dlg.showModal!=='function') return;   // without <dialog> the grid still works
   var ph=dlg.querySelector('.apd-ph'), list=$('#apd-l'), back=null, timer=0;
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;') }
+  function esc(s){ return String(s).replace(/&/g,'&').replace(/</g,'&lt;') }
   function cleanup(){                                                      // runs once per close, whichever path closed it
     if(dlg.open||!document.documentElement.classList.contains('dlg-open')) return;
     clearTimeout(timer); dlg.classList.remove('show');
@@ -206,7 +206,7 @@ addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
   function open(k,trigger){
     var r=ROUTES[k], ap=AIRPORTS[k];
     ph.src=r[4];
-    $('#apd-r').textContent=r[0]; $('#apd-n').textContent=ap.length+' aeroporturi'; $('#apd-t').textContent=r[1];
+    $('#apd-r').textContent=r[0]; $('#apd-n').textContent=ap.length+' airports'; $('#apd-t').textContent=r[1];
     list.innerHTML=ap.map(function(a){
       return '<li><span class="apd-code">'+esc(a[0])+'</span><span class="apd-nm"><b>'+esc(a[1])+'</b><span>'+esc(a[2])+'</span></span></li>';
     }).join('');
@@ -398,7 +398,7 @@ $('#quick').addEventListener('submit',function(e){
 var yr=$('#yr'); if(yr) yr.textContent=new Date().getFullYear();   // copyright year stays current
 $('#f').addEventListener('submit',function(e){
   e.preventDefault();
-  var n=$('#note'); n.textContent='Formular demonstrativ: în versiunea live, solicitarea ajunge direct la manager.'; n.classList.add('ok');
+  var n=$('#note'); n.textContent='Demo form: on the live site, your request goes straight to a manager.'; n.classList.add('ok');
 });
 
 })();
